@@ -11,10 +11,9 @@ var namespace string
 
 var (
 	clientConnectionsMetric, clientConnectionUsageMetric prometheus.Gauge
-	metricsOnce                                          = sync.Once{}
 )
 
-func initializeMetrics() {
+func initializeConnPoolMetrics() {
 	clientConnectionsMetric = promauto.NewGauge(
 		prometheus.GaugeOpts{
 			Namespace: namespace,
@@ -29,8 +28,4 @@ func initializeMetrics() {
 			Help:      "Percentage of connections in use in the MongoDB client connection pool",
 		},
 	)
-}
-
-func init() {
-	metricsOnce.Do(initializeMetrics)
 }
