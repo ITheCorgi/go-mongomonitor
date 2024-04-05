@@ -18,15 +18,17 @@ type config struct {
 	commandAttributeDisabled bool
 }
 
-func newConfig(opts ...Option) config {
-	cfgOnce := sync.Once{}
-	cfg := config{}
+func newConfig(opts ...Option) *config {
+	var (
+		cfgOnce, metricsOnce sync.Once
+		cfg                  = new(config)
+	)
 
 	cfgOnce.Do(func() {
 		cfg = getDefaultConfig()
 
 		for _, opt := range opts {
-			opt.apply(&cfg)
+			opt.apply(cfg)
 		}
 
 		if cfg.withTrace {
@@ -35,15 +37,18 @@ func newConfig(opts ...Option) config {
 				trace.WithInstrumentationVersion("0.49.0"),
 			)
 		}
+		if cfg.isMetricsEnabled {
+			metricsOnce.Do(initializeConnPoolMetrics)
+		}
 	})
 
 	return cfg
 }
 
-func getDefaultConfig() config {
+func getDefaultConfig() *config {
 	const defaultConnectionPoolSize = 100
 
-	return config{
+	return &config{
 		poolSize:                 defaultConnectionPoolSize,
 		isPoolAlertingOn:         true,
 		commandAttributeDisabled: true,

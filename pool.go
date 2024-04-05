@@ -8,8 +8,8 @@ import (
 )
 
 type poolMonitor struct {
-	cfg   config
 	stats stats
+	cfg   *config
 	mu    *sync.Mutex
 }
 
@@ -35,8 +35,10 @@ func (p *poolMonitor) initConnectionPoolMonitor() *event.PoolMonitor {
 				clientConnectionsMetric.Dec()
 			}
 
-			totalConnections := atomic.LoadUint64(&p.stats.clientConnections)
-			clientConnectionUsageMetric.Set(float64(totalConnections) / float64(p.cfg.poolSize) * 100)
+			if p.cfg.isPoolAlertingOn {
+				totalConnections := atomic.LoadUint64(&p.stats.clientConnections)
+				clientConnectionUsageMetric.Set(float64(totalConnections) / float64(p.cfg.poolSize) * 100)
+			}
 		},
 	}
 }
