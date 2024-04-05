@@ -11,7 +11,7 @@ var namespace string
 
 var (
 	clientConnectionsMetric, clientConnectionUsageMetric prometheus.Gauge
-	metricsOnce                                          = new(sync.Once)
+	metricsOnce                                          = sync.Once{}
 )
 
 func initializeMetrics() {

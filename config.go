@@ -19,7 +19,7 @@ type config struct {
 }
 
 func newConfig(opts ...Option) config {
-	cfgOnce := new(sync.Once)
+	cfgOnce := sync.Once{}
 	cfg := config{}
 
 	cfgOnce.Do(func() {
@@ -29,10 +29,12 @@ func newConfig(opts ...Option) config {
 			opt.apply(&cfg)
 		}
 
-		cfg.tracer = cfg.tracerProvider.Tracer(
-			cfg.scopeName,
-			trace.WithInstrumentationVersion("0.49.0"),
-		)
+		if cfg.withTrace {
+			cfg.tracer = cfg.tracerProvider.Tracer(
+				cfg.scopeName,
+				trace.WithInstrumentationVersion("0.49.0"),
+			)
+		}
 	})
 
 	return cfg
