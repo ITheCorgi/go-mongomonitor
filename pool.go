@@ -34,6 +34,9 @@ func (p *poolMonitor) initConnectionPoolMonitor() *event.PoolMonitor {
 				atomic.AddUint64(&p.stats.clientConnections, ^uint64(0))
 				clientConnectionsMetric.Dec()
 			}
+
+			totalConnections := atomic.LoadUint64(&p.stats.clientConnections)
+			clientConnectionUsageMetric.Set(float64(totalConnections) / float64(p.cfg.poolSize) * 100)
 		},
 	}
 }
