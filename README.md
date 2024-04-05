@@ -3,8 +3,8 @@
 ## Getting started
 ### Connection pool monitor:
 There is following metrics:
-- client_connections_in_mongo_pool_count
-- client_connection_mongo_usage_in_percent
+- mongo_client_connections_in_pool_count
+- mongo_client_connection_usage_in_percent
 
 To add alert to check connection pool usage in grafana add following:
 ```yaml
@@ -12,7 +12,7 @@ groups:
 - name: connection_pool_usage
   rules:
     - alert: ConnectionPoolHighUsage
-      expr: <namespacename_mongo_>client_connection_mongo_usage_in_percent > 90
+      expr: <namespacename_mongo_>mongo_client_connection_usage_in_percent > 90
       for: 30s
       severity: warning
       summary: "Connection pool high usage"
