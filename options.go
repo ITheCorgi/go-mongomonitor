@@ -38,10 +38,11 @@ func WithScopeName(name string) Option {
 	})
 }
 
-func WithMetricsEnabled(namespace string) Option {
+func WithMetricsEnabled(name string) Option {
 	return optionFunc(func(cfg *config) {
 		cfg.isMetricsEnabled = true
-		cfg.namespace = namespace
+		cfg.namespace = name
+		namespace = name
 	})
 }
 
