@@ -19,10 +19,10 @@ type config struct {
 }
 
 func newConfig(opts ...Option) config {
-	once := &sync.Once{}
+	cfgOnce := new(sync.Once)
 	cfg := config{}
 
-	once.Do(func() {
+	cfgOnce.Do(func() {
 		cfg = getDefaultConfig()
 
 		for _, opt := range opts {
