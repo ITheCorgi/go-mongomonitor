@@ -3,7 +3,7 @@
 ## Getting started
 ### Connection pool monitor:
 There is following metrics:
-- mongo_client_connection_pool_count
+- mongo_client_connections_in_pool_count
 - mongo_client_connection_usage_in_percent
 
 To add alert to check connection pool usage in grafana add following:

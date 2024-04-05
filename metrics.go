@@ -11,7 +11,7 @@ var (
 	clientConnectionsMetric = promauto.NewGauge(
 		prometheus.GaugeOpts{
 			Namespace: namespace,
-			Name:      "mongo_client_connection_pool_count",
+			Name:      "mongo_client_connections_in_pool_count",
 			Help:      "number of connections in the MongoDB connection pool",
 		})
 
